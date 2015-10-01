@@ -43,18 +43,62 @@ function vir_create_post_type() {
 add_action( 'add_meta_boxes', 'sections_metabox' );
 function sections_metabox()
 {
-    add_meta_box( 'sections', 'Experience Sections', 'sections_metabox_render', 'resume', 'normal', 'high' );
+    add_meta_box( 'sections', 'Experience Sections', 'vir_experience_metabox_render', 'resume', 'normal', 'high' );
+	add_meta_box( 'personal_sections', 'Personal Information', 'vir_personal_metabox_render', 'resume', 'normal', 'high' );
+	add_meta_box( 'educational_sections', 'Educational Information', 'vir_educational_metabox_render', 'resume', 'normal', 'high' );
+	add_meta_box( 'project_sections', 'Project Information', 'vir_project_metabox_render', 'resume', 'normal', 'high' );
+	add_meta_box( 'skills_sections', 'Professional Skills', 'vir_skills_metabox_render', 'resume', 'normal', 'high' );
+	add_meta_box( 'certification_sections', 'Certifications If any', 'vir_certifications_metabox_render', 'resume', 'normal', 'high' );
 }
 
-function sections_metabox_render()
+function vir_experience_metabox_render()
 {
-    $output = '<input type="text" placeholder="Company" name="vir_company[]" style="width:100%; width:45%; float:left; margin-right:5%;"/>
-				<input type="text" placeholder="Designation" name="vir_designation[]" style="width:45%; float:left; ">
-				<input type="text" placeholder="From" name="vir_frm[]" style="width:45%; float:left; margin-right:5%;">
-				<input type="text" placeholder="To" name="vir_to_yr[]" style="width:35%; float:left; ">
-				<label style="padding:8px 0px;"><input type="checkbox" placeholder="To" name="vir_curr_employer" style="float:left; ">Current Employer</label>
-			   <div class="row"><textarea placeholder="Section Content" name="section_content[]" style="width:100%;" class="textedit" /></textarea></div></div>'; 
+    $output = '<div class="experiences"></div>
+			   <button class="button button-primary button-large addExperience" type="button">Add Experience</button>
+			   '; 
 	echo $output;
+}
+function vir_educational_metabox_render()
+{
+    $output = '<div class="educations"></div>
+			   <button class="button button-primary button-large addEducation" type="button">Add Education</button>
+			   '; 
+	echo $output;
+}
+
+function vir_project_metabox_render()
+{
+    $output = '<div class="projects"></div>
+			   <button class="button button-primary button-large addProject" type="button">Add A Project</button>
+			   '; 
+	echo $output;
+}
+
+function vir_skills_metabox_render()
+{
+    $output = '<div class="skills"></div>
+			   <button class="button button-primary button-large addSkills" type="button">Add Skills</button>
+			   '; 
+	echo $output;
+}
+
+function vir_certifications_metabox_render()
+{
+    $output = '<div class="certifications"></div>
+			   <button class="button button-primary button-large addCertification" type="button">Add Certification(s)</button>'; 
+	echo $output;
+}
+
+function vir_personal_metabox_render()
+{
+	
+	$output = '<table border="0" style="width:500px; border-collapse:collapse;">
+	<tr><td><input type="text" name="vir[fname]" placeholder="First Name"></td><td><input type="text" name="vir[name]" placeholder=" Last Name"></td></tr>
+	<tr><td><input type="text" name="vir[email]" placeholder="E-mail"><br><em>yourname@example.com</em></td><td><input type="text" name="vir[contact_no]" placeholder="Contact no"></td></tr>
+	<tr><td><input type="text" name="vir[website]" placeholder="Website"><br><em>http://www.example.com</em></td><td><textarea name="vir[address]" placeholder="address"></textarea></td></tr>
+	</table>';
+	echo $output;
+	
 }
 
 function vir_styles()
@@ -70,5 +114,14 @@ function vir_scripts()
     wp_enqueue_script( 'vir-admin-scrtipt',  plugins_url('assets/jquery-te-1.4.0.min.js', __FILE__) );
     wp_enqueue_script( 'vir-admin-config',  plugins_url('assets/text-editor.js', __FILE__) );
 }
+
+function vir_save_experience($post_id){
+
+
+    $vir = $_POST['vir'];
+
+    update_post_meta($post_id,'_resume',$vir);
+}
+add_action('save_post','vir_save_experience');
 add_action( 'admin_enqueue_scripts', 'vir_scripts' );
 add_action( 'admin_enqueue_scripts', 'vir_styles' );
