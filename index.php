@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Visual_Resume
- * @version 1.0
+ * @version 1.0.0
  */
 /*
 Plugin Name: Visual Resume
