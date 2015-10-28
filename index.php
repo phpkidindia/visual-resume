@@ -91,14 +91,17 @@ function vir_certifications_metabox_render()
 
 function vir_personal_metabox_render()
 {
-	
+	global $post;
 	$output = '<table border="0" style="width:500px; border-collapse:collapse;">
 	<tr><td><input type="text" name="vir[fname]" placeholder="First Name"></td><td><input type="text" name="vir[name]" placeholder=" Last Name"></td></tr>
 	<tr><td><input type="text" name="vir[email]" placeholder="E-mail"><br><em>yourname@example.com</em></td><td><input type="text" name="vir[contact_no]" placeholder="Contact no"></td></tr>
 	<tr><td><input type="text" name="vir[website]" placeholder="Website"><br><em>http://www.example.com</em></td><td><textarea name="vir[address]" placeholder="address"></textarea></td></tr>
 	</table>';
 	echo $output;
-	
+	$vir_data = get_post_meta($post->ID,'vir_personal_info',true);
+	echo '<pre>';
+	print_r($vir_data);
+	echo '</pre>';
 }
 
 function vir_styles()
@@ -118,10 +121,40 @@ function vir_scripts()
 function vir_save_experience($post_id){
 
 
-    $vir = $_POST['vir'];
+    $vir = $_POST['vir_exp'];
 
-    update_post_meta($post_id,'_resume',$vir);
+    update_post_meta($post_id,'vir_resume_exp',$vir);
+}
+
+function vir_save_education($post_id){
+
+
+    $vir = $_POST['vir_edu'];
+
+    update_post_meta($post_id,'vir_resume_edu',$vir);
+}
+
+function vir_save_skills($post_id){
+   $vir = $_POST['vir_skills'];
+
+    update_post_meta($post_id,'vir_resume_skills',$vir);
+}
+function vir_save_certifications($post_id){
+   $vir = $_POST['vir_cert'];
+
+    update_post_meta($post_id,'vir_resume_certs',$vir);
+}
+
+function vir_save_personalinfo($post_id){
+   $vir = $_POST['vir'];
+
+    update_post_meta($post_id,'vir_personal_info',$vir);
 }
 add_action('save_post','vir_save_experience');
+add_action('save_post','vir_save_education');
+add_action('save_post','vir_save_skills');
+add_action('save_post','vir_save_certifications');
+add_action('save_post','vir_save_personalinfo');
+
 add_action( 'admin_enqueue_scripts', 'vir_scripts' );
 add_action( 'admin_enqueue_scripts', 'vir_styles' );
